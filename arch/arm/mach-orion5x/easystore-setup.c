@@ -17,18 +17,18 @@
 #include <linux/pci.h>
 #include <linux/irq.h>
 #include <linux/mtd/physmap.h>
+#include <linux/mv643xx_eth.h>
 #include <linux/leds.h>
 #include <linux/gpio_keys.h>
 #include <linux/gpio-fan.h>
 #include <linux/input.h>
 #include <linux/timer.h>
-#include <linux/mv643xx_eth.h>
 #include <linux/i2c.h>
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
 #include <asm/mach/pci.h>
-#include <mach/orion5x.h>
 #include <plat/orion-gpio.h>
+#include "orion5x.h"
 #include "common.h"
 #include "mpp.h"
 
@@ -398,11 +398,12 @@ static void __init aspire_easystore_init(void)
 
 MACHINE_START(A_ES, "Acer Aspire EasyStore")
 	.atag_offset	= 0x100,
+	.nr_irqs	= ORION5X_NR_IRQS,
 	.init_machine	= aspire_easystore_init,
 	.map_io		= orion5x_map_io,
 	.init_early	= orion5x_init_early,
 	.init_irq	= orion5x_init_irq,
 	.init_time	= orion5x_timer_init,
-	.dma_zone_size  = SZ_256M,
+	.fixup		= tag_fixup_mem32,
 	.restart	= orion5x_restart,
 MACHINE_END
